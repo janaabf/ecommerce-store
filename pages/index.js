@@ -39,10 +39,10 @@ export default function Home(props) {
         <div css={products}>
           {props.plants.map((plant) => {
             return (
-              <div key={`plant-${plant.name}`} css={plantCard}>
-                <Link href={`/${plant.name}`}>
+              <div key={`plant-${plant.id}`} css={plantCard}>
+                <Link href={`/products/${plant.id}`}>
                   <div>
-                    <h3>{plant.name}</h3>
+                    <h1>{plant.name}</h1>
                     <div>{plant.image}</div>
                     <div>{plant.price} €</div>
                     <Link href="/cart">

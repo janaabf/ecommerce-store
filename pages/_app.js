@@ -38,6 +38,7 @@ function MyApp({ Component, pageProps }) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
+      <div>cookies</div>
     </>
   );
 }

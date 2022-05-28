@@ -27,4 +27,11 @@ export const plantsDatabase = [
     image: 'image',
     price: '5',
   },
+  {
+    id: '5',
+    name: 'Succulent',
+    scientificName: 'gh',
+    image: 'image',
+    price: '5',
+  },
 ];

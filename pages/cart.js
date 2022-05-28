@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { plantsDatabase } from '../util/plantdata';
 
 export default function Cart() {
   return (
@@ -12,8 +13,8 @@ export default function Cart() {
 
       <main>
         <h1>Cart</h1>
-        <p>List of your favorite items</p>
-        <div>ITEMS</div>
+        <p>Your Chosen Ones:</p>
+        <div>{}</div>
         <button>Checkout :D</button>
       </main>
     </div>
