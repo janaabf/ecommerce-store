@@ -7,7 +7,7 @@ import { getParsedCookie, setStringifiedCookie } from '../../util/cookies';
 import { plantsDatabase } from '../../util/plantdata';
 
 export default function Plant(props) {
-  const [cartCount, setCartCount] = useState(0); // access count of plant if there
+  const [cartCount, setCartCount] = useState(1); // access count of plant if there
   // const [plantsInCart, setPlantsInCart] = useState('');
 
   if (!props.plant) {
@@ -57,6 +57,7 @@ export default function Plant(props) {
                 (cookie) => cookie.name === props.plant.name,
               )
             ) {
+              // add plant if plant not yet in cart
               const newPlantsInCart = [
                 ...currentPlantsInCart,
                 { name: props.plant.name, quantity: parseInt(cartCount) },
@@ -64,6 +65,7 @@ export default function Plant(props) {
               setStringifiedCookie('cart', newPlantsInCart);
               console.log(newPlantsInCart);
             } else {
+              // add quantity if plant already in cart
               const updatedPlant = currentPlantsInCart.find(
                 (cookie) => cookie.name === props.plant.name,
               );

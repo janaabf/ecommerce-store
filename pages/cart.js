@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import Cookies from 'js-cookie';
 import Head from 'next/head';
-import Link from 'next/link';
+import { React, useEffect, useState } from 'react';
 import { getParsedCookie, setStringifiedCookie } from '../util/cookies';
 
 const plantItem = css`
@@ -15,7 +15,19 @@ const plantItem = css`
 `;
 
 export default function Cart() {
-  const currentCart = Cookies.get('cart') ? getParsedCookie('cart') : [];
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const currentCart = Cookies.get('cart') ? getParsedCookie('cart') : [];
+    setCartItems(currentCart);
+    console.log('set initial value');
+  }, []);
+
+  let totalQuantity = 0;
+  for (let i = 0; i < cartItems.length; i++) {
+    totalQuantity += cartItems[i].quantity;
+  }
+
   return (
     <div>
       <Head>
@@ -27,20 +39,59 @@ export default function Cart() {
       <main>
         <h1>Cart</h1>
         <p>Your Chosen Ones:</p>
-        <div>
-          {currentCart.map((cartItem) => {
-            return (
-              <div key={`cart-${cartItem.name}`} css={plantItem}>
+        {cartItems.map((cartItem) => {
+          return (
+            <div key={`cart-${cartItem.name}`} css={plantItem}>
+              <div>
                 <div>
-                  <div>
-                    {cartItem.quantity} x {cartItem.name}
-                  </div>
-                  {console.log(cartItem.name)}
+                  {cartItem.quantity} x {cartItem.name}
+                  <button
+                    onClick={() => {
+                      const updatedItem = cartItems.find(
+                        (item) => item.name === cartItem.name,
+                      );
+                      updatedItem.quantity += 1;
+                      setStringifiedCookie('cart', cartItems);
+                      setCartItems(cartItems);
+                      console.log(cartItems);
+                      console.log(cartItem.quantity);
+                      console.log(updatedItem);
+                    }}
+                  >
+                    +
+                  </button>
+                  <button
+                    onClick={() => {
+                      const updatedItem = cartItems.find(
+                        (item) => item.name === cartItem.name,
+                      );
+                      updatedItem.quantity -= 1;
+                      setStringifiedCookie('cart', cartItems);
+                      setCartItems(cartItems);
+                      console.log(cartItems);
+                      console.log(cartItem.quantity);
+                      console.log(updatedItem);
+                    }}
+                  >
+                    -
+                  </button>
                 </div>
+                <button
+                  onClick={() => {
+                    const newCart = cartItems.filter(
+                      (item) => item.name !== cartItem.name,
+                    );
+                    setStringifiedCookie('cart', newCart);
+                    setCartItems(newCart);
+                  }}
+                >
+                  remove from cart
+                </button>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
+        <div>total quantity of items: {totalQuantity}</div>
         <button>Checkout :D</button>
       </main>
     </div>
