@@ -41,9 +41,9 @@ export default function Plant(props) {
           step={1}
           value={cartCount}
           onChange={(e) =>
-            e.currentTarget.value > -1
+            e.currentTarget.value > 0
               ? setCartCount(e.currentTarget.value)
-              : setCartCount(0)
+              : setCartCount(1)
           }
         />
         <button
@@ -54,20 +54,24 @@ export default function Plant(props) {
 
             if (
               !currentPlantsInCart.find(
-                (cookie) => cookie.name === props.plant.name,
+                (cookie) => cookie.id === props.plant.id,
               )
             ) {
               // add plant if plant not yet in cart
               const newPlantsInCart = [
                 ...currentPlantsInCart,
-                { name: props.plant.name, quantity: parseInt(cartCount) },
+                {
+                  id: props.plant.id,
+                  name: props.plant.name,
+                  quantity: parseInt(cartCount),
+                },
               ];
               setStringifiedCookie('cart', newPlantsInCart);
               console.log(newPlantsInCart);
             } else {
               // add quantity if plant already in cart
               const updatedPlant = currentPlantsInCart.find(
-                (cookie) => cookie.name === props.plant.name,
+                (cookie) => cookie.id === props.plant.id,
               );
               updatedPlant.quantity += parseInt(cartCount); // shouldn't be parsed again???
               setStringifiedCookie('cart', currentPlantsInCart);

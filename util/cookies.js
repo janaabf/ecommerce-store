@@ -21,3 +21,5 @@ export function getParsedCookie(key) {
 export function setStringifiedCookie(key, value) {
   return Cookies.set(key, JSON.stringify(value));
 }
+
+export const savedCookies = [];

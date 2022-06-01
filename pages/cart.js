@@ -41,21 +41,21 @@ export default function Cart() {
         <p>Your Chosen Ones:</p>
         {cartItems.map((cartItem) => {
           return (
-            <div key={`cart-${cartItem.name}`} css={plantItem}>
+            <div key={`cart-${cartItem.id}`} css={plantItem}>
               <div>
                 <div>
                   {cartItem.quantity} x {cartItem.name}
                   <button
                     onClick={() => {
                       const updatedItem = cartItems.find(
-                        (item) => item.name === cartItem.name,
+                        (item) => item.id === cartItem.id,
                       );
-                      updatedItem.quantity += 1;
+                      const newAmount = (updatedItem.quantity += 1);
                       setStringifiedCookie('cart', cartItems);
-                      setCartItems(cartItems);
+                      setCartItems([...cartItems]);
                       console.log(cartItems);
                       console.log(cartItem.quantity);
-                      console.log(updatedItem);
+                      console.log(newAmount);
                     }}
                   >
                     +
@@ -63,14 +63,22 @@ export default function Cart() {
                   <button
                     onClick={() => {
                       const updatedItem = cartItems.find(
-                        (item) => item.name === cartItem.name,
+                        (item) => item.id === cartItem.id,
                       );
-                      updatedItem.quantity -= 1;
-                      setStringifiedCookie('cart', cartItems);
-                      setCartItems(cartItems);
-                      console.log(cartItems);
-                      console.log(cartItem.quantity);
-                      console.log(updatedItem);
+                      if (updatedItem.quantity === 1) {
+                        const newCart = cartItems.filter(
+                          (item) => item.id !== cartItem.id,
+                        );
+                        setStringifiedCookie('cart', newCart);
+                        setCartItems(newCart);
+                      } else {
+                        const newAmount = (updatedItem.quantity -= 1);
+                        setStringifiedCookie('cart', cartItems);
+                        setCartItems([...cartItems]);
+                        console.log(cartItems);
+                        console.log(cartItem.quantity);
+                        console.log(newAmount);
+                      }
                     }}
                   >
                     -
@@ -79,7 +87,7 @@ export default function Cart() {
                 <button
                   onClick={() => {
                     const newCart = cartItems.filter(
-                      (item) => item.name !== cartItem.name,
+                      (item) => item.id !== cartItem.id,
                     );
                     setStringifiedCookie('cart', newCart);
                     setCartItems(newCart);

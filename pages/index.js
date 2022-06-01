@@ -45,8 +45,8 @@ export default function Home(props) {
                     <h1>{plant.name}</h1>
                     <div>{plant.image}</div>
                     <div>{plant.price} €</div>
-                    <Link href="/cart">
-                      <button>Add to Cart</button>
+                    <Link href={`/products/${plant.id}`}>
+                      <button>view</button>
                     </Link>
                   </div>
                 </Link>
