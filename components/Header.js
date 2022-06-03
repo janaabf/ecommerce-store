@@ -9,7 +9,6 @@ const headerStyles = css`
   justify-content: space-between;
   padding: 10px 14px;
   color: #333333;
-  background-color: #eee;
 `;
 
 export default function Header() {
@@ -27,10 +26,10 @@ export default function Header() {
 
   return (
     <header css={headerStyles}>
-      <Link href="/">🪴</Link>
+      <Link href="/">☁️</Link>
       <div>
         <Link href="/cart">
-          <div>{cartCounter} Cart</div>
+          <div>{cartCounter} cart</div>
         </Link>
       </div>
     </header>

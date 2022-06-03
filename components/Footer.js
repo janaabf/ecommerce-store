@@ -5,7 +5,7 @@ const footerStyles = css`
   justify-content: center;
   padding: 10px 14px;
   color: #333333;
-  background-color: #eee;
+  background-color: rgb(255, 255, 255);
   margin: 20px;
   border-radius: 5px;
 `;
@@ -13,7 +13,7 @@ const footerStyles = css`
 export default function Footer() {
   return (
     <footer css={footerStyles}>
-      <div>credits to myself :)</div>
+      <div>source: trust me</div>
     </footer>
   );
 }

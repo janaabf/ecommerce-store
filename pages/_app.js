@@ -1,6 +1,11 @@
 import { css, Global } from '@emotion/react';
 import Layout from '../components/Layout';
 
+// color palette:
+// red: #f58476
+// blue: #8cb9be
+// white bg: #f3f2ef
+
 function MyApp({ Component, pageProps }) {
   return (
     <>
@@ -10,6 +15,7 @@ function MyApp({ Component, pageProps }) {
           body {
             padding: 0;
             margin: 0;
+            background-color: #f3f2ef;
             font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
               Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
               sans-serif;
@@ -29,8 +35,9 @@ function MyApp({ Component, pageProps }) {
             border-radius: 3px;
             padding: 5px;
             margin: 5px;
+            background-color: #8cb9be;
             :hover {
-              background-color: grey;
+              opacity: 0.5;
             }
           }
         `}
