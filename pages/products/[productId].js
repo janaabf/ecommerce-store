@@ -3,10 +3,10 @@ import Cookies from 'js-cookie';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { React, useState } from 'react';
-import Header from '../../components/Header.js';
+import { React, useEffect, useState } from 'react';
+import Layout from '../../components/Layout.js';
 import { getParsedCookie, setStringifiedCookie } from '../../util/cookies';
-import { productData } from '../../util/database';
+import { getProductDataId } from '../../util/database';
 
 const mainStyles = css`
   margin: 0 5vw;
@@ -24,9 +24,37 @@ const contentStyles = css`
   gap: 10px;
 `;
 
-export default function product(props) {
+export default function Product(props) {
   const [cartCount, setCartCount] = useState(1); // access count of product if there
-  // const [productsInCart, setproductsInCart] = useState('');
+
+  // const [totalQuantity, setTotalQuantity] = useState(props.totalQuantity);
+
+  // ---------------- to set totalQuantity from cookies manually
+  // useEffect(() => {
+  //   const currentCart = Cookies.get('cart') ? getParsedCookie('cart') : [];
+  //   const initialTotalCart = currentCart
+  //     .map((cookie) => cookie.quantity)
+  //     .reduce((accumulator, value) => {
+  //       return parseInt(accumulator) + parseInt(value);
+  //     }, 0);
+  //   setTotalQuantity(initialTotalCart);
+  // }, []);
+
+  // ----------------- to update quantity onClick manually
+  // function handleUpdate() {
+  //   const currentCart = Cookies.get('cart') ? getParsedCookie('cart') : [];
+  //   let totalQuantityCookies = currentCart
+  //     .map((cookie) => cookie.quantity)
+  //     .reduce((accumulator, value) => {
+  //       return parseInt(accumulator) + parseInt(value);
+  //     }, 0);
+  //   totalQuantityCookies += parseInt(cartCount);
+  //   setTotalQuantity(totalQuantityCookies);
+  // }
+
+  // useEffect(() => {
+  //   const totalQuantity = handleUpdate();
+  // }, [cartCount]);
 
   if (!props.product) {
     return (
@@ -51,87 +79,98 @@ export default function product(props) {
         <meta name="description" content="the product you were looking for." />
       </Head>
 
-      <Header />
-      <main css={mainStyles}>
-        <h2>{props.product.subtitle}</h2>
-        <h1>{props.product.name}</h1>
-        <div css={contentContainer}>
-          <Image src={`/${props.product.id}.jpg`} width="300" height="300" />
-          <div css={contentStyles}>
-            <div>{props.product.description}</div>
-            <div>{props.product.price} €</div>
-            <label>
-              <input
-                type="number"
-                step={1}
-                value={cartCount}
-                onChange={(e) =>
-                  e.currentTarget.value > 0
-                    ? setCartCount(e.currentTarget.value)
-                    : setCartCount(1)
-                }
-              />
-              <button
-                onClick={() => {
-                  const currentProductsInCart = Cookies.get('cart')
-                    ? getParsedCookie('cart')
-                    : [];
-
-                  if (
-                    !currentProductsInCart.find(
-                      (cookie) => cookie.id === props.product.id,
-                    )
-                  ) {
-                    // add product if product not yet in cart
-                    const newProductsInCart = [
-                      ...currentProductsInCart,
-                      {
-                        id: props.product.id,
-                        name: props.product.name,
-                        quantity: parseInt(cartCount),
-                      },
-                    ];
-                    setStringifiedCookie('cart', newProductsInCart);
-                    console.log(newProductsInCart);
-                  } else {
-                    // add quantity if product already in cart
-                    const updatedProduct = currentProductsInCart.find(
-                      (cookie) => cookie.id === props.product.id,
-                    );
-                    updatedProduct.quantity += parseInt(cartCount); // shouldn't be parsed again???
-                    setStringifiedCookie('cart', currentProductsInCart);
-                    console.log(currentProductsInCart);
-                    console.log('product found');
-                    console.log(typeof updatedProduct.quantity);
+      <Layout globalCart={props.globalCart}>
+        <main css={mainStyles}>
+          <h2>{props.product.subtitle}</h2>
+          <h1>{props.product.name}</h1>
+          <div css={contentContainer}>
+            <Image src={`/${props.product.id}.jpg`} width="300" height="300" />
+            <div css={contentStyles}>
+              <div>{props.product.description}</div>
+              <div>{props.product.price} €</div>
+              <label>
+                <input
+                  type="number"
+                  step={1}
+                  value={cartCount}
+                  onChange={(e) =>
+                    e.currentTarget.value > 0
+                      ? setCartCount(e.currentTarget.value)
+                      : setCartCount(1)
                   }
-                }}
-              >
-                Add to Cart
-              </button>
-            </label>
-            <br />
-            <Link href="/">
-              <button>back to all products</button>
-            </Link>
+                />
+                <button
+                  onClick={() => {
+                    // alert('added to cart!');
+                    const currentProductsInCart = Cookies.get('cart')
+                      ? getParsedCookie('cart')
+                      : [];
+
+                    if (
+                      !currentProductsInCart.find(
+                        (cookie) => cookie.id === props.product.id,
+                      )
+                    ) {
+                      // add product if product not yet in cart
+                      const newProductsInCart = [
+                        ...currentProductsInCart,
+                        {
+                          id: props.product.id,
+                          // name: props.product.name,
+                          quantity: parseInt(cartCount),
+                          // price: parseInt(props.product.price),
+                        },
+                      ];
+                      setStringifiedCookie('cart', newProductsInCart);
+                      props.setGlobalCart(newProductsInCart);
+                    } else {
+                      // add quantity if product already in cart
+                      const updatedProduct = currentProductsInCart.find(
+                        (cookie) => cookie.id === props.product.id,
+                      );
+                      updatedProduct.quantity += parseInt(cartCount); // shouldn't be parsed again???
+                      setStringifiedCookie('cart', currentProductsInCart);
+                      props.setGlobalCart(currentProductsInCart);
+                    }
+                  }}
+                >
+                  Add to Cart
+                </button>
+              </label>
+              <br />
+              <Link href="/">
+                <button>back to all products</button>
+              </Link>
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </Layout>
     </div>
   );
 }
 
-export function getServerSideProps(context) {
-  const foundproduct = productData.find((product) => {
-    return product.id === context.query.productId;
-  });
+export async function getServerSideProps(context) {
+  // get right product from database
+  const product = await getProductDataId(context.query.productId);
 
-  if (!foundproduct) {
-    context.res.statusCode = 404;
-  }
+  // // --------- to get animals NOT from Database:
+  // const foundProduct = productData.find((products) => {
+  //   return products.id === context.query.productId;
+  // });
+
+  // // get saved cookie
+  // const cartCookie = JSON.parse(context.req.cookies.cart || '[]');
+
+  // // get cookies
+  // const foundCookie = cartCookie.find((cookie) => {
+  //   return cookie.id === foundProduct.id;
+  // });
+
+  // console.log(foundCookie);
 
   return {
     props: {
-      product: foundproduct || null,
+      product: product, // value is always truthy, so we don't need to have an else statement
     },
   };
 }

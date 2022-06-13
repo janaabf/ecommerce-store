@@ -1,5 +1,8 @@
 import { css, Global } from '@emotion/react';
+import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
+import { getParsedCookie, setStringifiedCookie } from '../util/cookies';
 
 // color palette:
 // red: #f58476
@@ -7,6 +10,14 @@ import Layout from '../components/Layout';
 // white bg: #f3f2ef
 
 function MyApp({ Component, pageProps }) {
+  const [globalCart, setGlobalCart] = useState([]);
+
+  useEffect(() => {
+    const currentCart = Cookies.get('cart') ? getParsedCookie('cart') : [];
+    setGlobalCart(currentCart);
+    console.log('set initial value');
+  }, []);
+
   return (
     <>
       <Global
@@ -40,12 +51,19 @@ function MyApp({ Component, pageProps }) {
               opacity: 0.5;
             }
           }
+          input {
+            border: none;
+            border-radius: 2px;
+            padding: 5px;
+            width: 70px;
+          }
         `}
       />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-      <div>cookies</div>
+      <Component
+        globalCart={globalCart}
+        setGlobalCart={setGlobalCart}
+        {...pageProps}
+      />
     </>
   );
 }
