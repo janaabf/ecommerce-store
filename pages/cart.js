@@ -51,6 +51,8 @@ export default function Cart(props) {
       return a + b;
     }, 0);
 
+  console.log(props.cartItems);
+
   const cartSum = cartItems
     .map((arr) => arr.price * arr.quantity)
     .reduce((a, b) => {
@@ -151,13 +153,19 @@ export default function Cart(props) {
                               (cookie) => cookie.id === cartItem.id,
                             );
                             if (updatedItem.quantity === 1) {
-                              // remove from cart
-                              // const newCart = cartItems.filter(
-                              //   (item) => item.id !== cartItem.id,
-                              // );
-                              // setStringifiedCookie('cart', newCart);
-                              // setCartItems(newCart);
-                              // props.setGlobalCart(newCart);
+                              const newCookie = currentCookie.filter(
+                                (cookie) => {
+                                  return cookie.id !== cartItem.id;
+                                },
+                              );
+                              setStringifiedCookie('cart', newCookie);
+                              props.setGlobalCart([...newCookie]);
+                              // cart
+                              const newCart = cartItems.filter((item) => {
+                                return item.id !== cartItem.id;
+                              });
+                              setCartItems([...newCart]);
+                              console.log(newCart);
                             } else {
                               updatedCart.quantity -= 1;
                               setStringifiedCookie('cart', currentCookie);
@@ -170,7 +178,9 @@ export default function Cart(props) {
                           -
                         </button>
                       </div>
-                      <div>price per cloud: {cartItem.price} €</div>
+                      <div>
+                        subtotal: {cartItem.price * cartItem.quantity} €
+                      </div>
                     </div>
                   </div>
                   <div>
@@ -203,9 +213,10 @@ export default function Cart(props) {
           )}
           <div>total quantity of items: {totalQuantity}</div>
           <div>total sum: {cartSum} €</div>
-          {/* <Link href="/checkout">
+          <br />
+          <Link href="/checkout">
             <button>Checkout</button>
-          </Link> */}
+          </Link>
         </main>
       </Layout>
     </>
