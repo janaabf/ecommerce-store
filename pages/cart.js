@@ -152,21 +152,7 @@ export default function Cart(props) {
                             const updatedCart = currentCookie.find(
                               (cookie) => cookie.id === cartItem.id,
                             );
-                            if (updatedItem.quantity === 1) {
-                              const newCookie = currentCookie.filter(
-                                (cookie) => {
-                                  return cookie.id !== cartItem.id;
-                                },
-                              );
-                              setStringifiedCookie('cart', newCookie);
-                              props.setGlobalCart([...newCookie]);
-                              // cart
-                              const newCart = cartItems.filter((item) => {
-                                return item.id !== cartItem.id;
-                              });
-                              setCartItems([...newCart]);
-                              console.log(newCart);
-                            } else {
+                            if (updatedItem.quantity !== 1) {
                               updatedCart.quantity -= 1;
                               setStringifiedCookie('cart', currentCookie);
                               props.setGlobalCart(currentCookie);

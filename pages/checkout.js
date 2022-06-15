@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { React, useEffect, useState } from 'react';
 import Header from '../components/Header.js';
 import Layout from '../components/Layout.js';
@@ -39,6 +40,7 @@ const formStyles = css`
 `;
 
 export default function Checkout(props) {
+  const router = useRouter();
   const cartSum = props.cartItems
     .map((arr) => arr.price * arr.quantity)
     .reduce((a, b) => {
@@ -73,67 +75,73 @@ export default function Checkout(props) {
                 );
               })}
               <p>Total Sum: {cartSum} €</p>
-              <p>Not quite rigt?</p>
+              <p>Not quite right?</p>
               <Link href="/cart">
                 <button>Back to Cart</button>
               </Link>
             </div>
             <div>
               <h2>Please fill in your Information:</h2>
-              <form css={formStyles}>
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  router.push('/thank-you').catch(() => {
+                    console.log('submit info error');
+                  });
+                }}
+                css={formStyles}
+              >
                 <ul>
                   <li>
                     <label htmlFor="first-name">First Name</label>
-                    <input id="first-name" />
+                    <input required id="first-name" />
                   </li>
                   <li>
                     <label htmlFor="last-name">Last Name</label>
-                    <input id="last-name" />
+                    <input required id="last-name" />
                   </li>
                   <li>
                     <label htmlFor="email-address">E-Mail</label>
-                    <input type="email-address" id="email" />
+                    <input required type="email-address" id="email" />
                   </li>
                   <li>
                     <label htmlFor="address">Address</label>
-                    <input id="address" />
+                    <input required id="address" />
                   </li>
                   <li>
                     <label htmlFor="City">City</label>
-                    <input id="City" />
+                    <input required id="City" />
                   </li>
                   <li>
                     <label htmlFor="postal-code">Postal Code</label>
-                    <input id="postal-code" />
+                    <input required id="postal-code" />
                   </li>
                   <li>
                     <label htmlFor="country">Country</label>
-                    <input id="country" />
+                    <input required id="country" />
                   </li>
                   <br />
                   <li>
                     <label htmlFor="credit-card">Credit Card Number</label>
-                    <input id="credit-card" />
+                    <input required id="credit-card" />
                   </li>
                   <li>
                     <label htmlFor="expiration-date">Expiration Date</label>
-                    <input id="expiration-date" />
+                    <input required id="expiration-date" />
                   </li>
                   <li>
                     <label htmlFor="security-code">Security Code</label>
-                    <input id="security-code" />
+                    <input required id="security-code" />
                   </li>
-                </ul>
-                <Link href="/thank-you">
                   <button
                     onClick={() => {
                       setStringifiedCookie('cart', []);
                       props.setGlobalCart([]);
                     }}
                   >
-                    Confirm Order
+                    Submit and Confirm Order
                   </button>
-                </Link>
+                </ul>
               </form>
             </div>
           </div>
