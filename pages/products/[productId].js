@@ -22,39 +22,18 @@ const contentStyles = css`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  a {
+    color: #3e9aa5;
+    font-weight: bold;
+    :hover {
+      color: #1a494e;
+    }
+  }
 `;
 
 export default function Product(props) {
   const [cartCount, setCartCount] = useState(1); // access count of product if there
-
-  // const [totalQuantity, setTotalQuantity] = useState(props.totalQuantity);
-
-  // ---------------- to set totalQuantity from cookies manually
-  // useEffect(() => {
-  //   const currentCart = Cookies.get('cart') ? getParsedCookie('cart') : [];
-  //   const initialTotalCart = currentCart
-  //     .map((cookie) => cookie.quantity)
-  //     .reduce((accumulator, value) => {
-  //       return parseInt(accumulator) + parseInt(value);
-  //     }, 0);
-  //   setTotalQuantity(initialTotalCart);
-  // }, []);
-
-  // ----------------- to update quantity onClick manually
-  // function handleUpdate() {
-  //   const currentCart = Cookies.get('cart') ? getParsedCookie('cart') : [];
-  //   let totalQuantityCookies = currentCart
-  //     .map((cookie) => cookie.quantity)
-  //     .reduce((accumulator, value) => {
-  //       return parseInt(accumulator) + parseInt(value);
-  //     }, 0);
-  //   totalQuantityCookies += parseInt(cartCount);
-  //   setTotalQuantity(totalQuantityCookies);
-  // }
-
-  // useEffect(() => {
-  //   const totalQuantity = handleUpdate();
-  // }, [cartCount]);
 
   if (!props.product) {
     return (
@@ -139,7 +118,7 @@ export default function Product(props) {
               </label>
               <br />
               <Link href="/">
-                <button>back to all products</button>
+                <a>{'<'} back to all products</a>
               </Link>
             </div>
           </div>

@@ -1,14 +1,15 @@
 import { css } from '@emotion/react';
-import Cookies from 'js-cookie';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { React, useEffect, useState } from 'react';
+import { React } from 'react';
 import Layout from '../components/Layout.js';
-import { getParsedCookie, setStringifiedCookie } from '../util/cookies';
 import { getProductData } from '../util/database';
 
 const mainStyles = css`
+  background-image: url('/hero.jpg');
+  background-repeat: no-repeat;
+  background-size: 100vw;
   /* margin: 15px 20px; */
 `;
 
@@ -23,17 +24,6 @@ const productCard = css`
     background-color: rgb(255, 255, 255);
   }
 `;
-
-const heroStyles = css`
-  background-image: url('/hero.jpg');
-  background-position: absolute;
-  background-repeat: no-repeat;
-  min-height: 80%;
-  background-size: 100% auto;
-  /* min-width: 100%; */
-  /* overflow: hidden; */
-`;
-
 const heroContent = css`
   display: flex;
   flex-direction: column;
@@ -50,22 +40,17 @@ const products = css`
   margin: 0 auto;
 `;
 
+const linkDesign = css`
+  color: #3e9aa5;
+  font-weight: bold;
+  :hover {
+    color: #1a494e;
+  }
+`;
+
 export default function Home(props) {
-  // const [totalQuantity, setTotalQuantity] = useState(0);
-
-  // useEffect(() => {
-  //   const currentCart = Cookies.get('cart') ? getParsedCookie('cart') : [];
-  //   const total = currentCart
-  //     .map((cookie) => cookie.quantity)
-  //     .reduce((accumulator, value) => {
-  //       return parseInt(accumulator) + parseInt(value);
-  //     }, 0);
-  //   setTotalQuantity(total);
-  //   console.log(total);
-  // }, []);
-
   return (
-    <div>
+    <>
       <Head>
         <title>Store - Home</title>
         <meta
@@ -74,10 +59,10 @@ export default function Home(props) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <div css={heroStyles}>
+      <main css={mainStyles}>
         <Layout globalCart={props.globalCart}>
-          <main css={mainStyles}>
+          <div>
+            {/* <Header globalCart={props.globalCart} /> */}
             <div css={heroContent}>
               <h1>welcome to heaven</h1>
               <p>...well, almost. We do sell clouds though.</p>
@@ -87,28 +72,26 @@ export default function Home(props) {
               {props.products.map((product) => {
                 return (
                   <div key={`product-${product.id}`} css={productCard}>
+                    <h1>{product.name}</h1>
+                    <Image
+                      src={`/${product.id}.jpg`}
+                      width="100"
+                      height="100"
+                    />
+                    <div>{product.price} €</div>
+                    <br />
                     <Link href={`/products/${product.id}`} passHref>
-                      <a>
-                        <h1>{product.name}</h1>
-                        <Image
-                          src={`/${product.id}.jpg`}
-                          width="100"
-                          height="100"
-                        />
-                        <div>{product.price} €</div>
-                        <Link href={`/products/${product.id}`} passHref>
-                          <button>view</button>
-                        </Link>
-                      </a>
+                      <a css={linkDesign}>view {'>'}</a>
                     </Link>
                   </div>
                 );
               })}
             </div>
-          </main>
+          </div>
         </Layout>
-      </div>
-    </div>
+        {/* <Footer /> */}
+      </main>
+    </>
   );
 }
 

@@ -1,9 +1,21 @@
+import { css } from '@emotion/react';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
-import { React, useEffect, useState } from 'react';
-import Header from '../components/Header.js';
+import { React } from 'react';
 import Layout from '../components/Layout.js';
+
+const mainStyles = css`
+  margin: 30vh auto;
+  text-align: center;
+
+  a {
+    color: #3e9aa5;
+    font-weight: bold;
+    :hover {
+      color: #1a494e;
+    }
+  }
+`;
 
 export default function Checkout(props) {
   return (
@@ -14,11 +26,13 @@ export default function Checkout(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout globalCart={props.globalCart}>
-        <main>
-          <h1>Thank you for your order!</h1>
-          <Link href="/">
-            <button>Shop more ☁️</button>
-          </Link>
+        <main css={mainStyles}>
+          <div>
+            <h1>Thank you for your order!</h1>
+            <Link href="/">
+              <a>Shop more</a>
+            </Link>
+          </div>
         </main>
       </Layout>
     </>

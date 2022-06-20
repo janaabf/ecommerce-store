@@ -1,13 +1,10 @@
 import { css } from '@emotion/react';
-import Cookies from 'js-cookie';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { React, useEffect, useState } from 'react';
-import Header from '../components/Header.js';
+import { React } from 'react';
 import Layout from '../components/Layout.js';
-import { getParsedCookie, setStringifiedCookie } from '../util/cookies';
+import { setStringifiedCookie } from '../util/cookies';
 import { getProductData } from '../util/database';
 
 const mainStyles = css`
@@ -17,8 +14,22 @@ const mainStyles = css`
 const checkoutContentStyles = css`
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 100px;
-  /* align-items: end; */
+
+  a {
+    color: #3e9aa5;
+    font-weight: bold;
+    :hover {
+      color: #1a494e;
+    }
+  }
+`;
+const flexChild = css`
+  background: white;
+  border-radius: 10px;
+  padding: 10px 30px;
+  border-radius: 3px;
 `;
 
 const formStyles = css`
@@ -32,6 +43,7 @@ const formStyles = css`
     background: none;
     margin-left: 20px;
     border: 1px solid black;
+    width: 20vw;
 
     :focus {
       background: white;
@@ -60,7 +72,7 @@ export default function Checkout(props) {
         <main css={mainStyles}>
           <h1>Checkout</h1>
           <div css={checkoutContentStyles}>
-            <div>
+            <div css={flexChild}>
               <h2>Your picks:</h2>
               {/* <p>(good choice, btw 😉)</p> */}
               {props.cartItems.map((cartItem) => {
@@ -75,12 +87,15 @@ export default function Checkout(props) {
                 );
               })}
               <p>Total Sum: {cartSum} €</p>
-              <p>Not quite right?</p>
+              <br />
+              <p>
+                <strong>Not quite right?</strong>
+              </p>
               <Link href="/cart">
-                <button>Back to Cart</button>
+                <a>{'<'} Back to Cart</a>
               </Link>
             </div>
-            <div>
+            <div css={flexChild}>
               <h2>Please fill in your Information:</h2>
               <form
                 onSubmit={(event) => {
@@ -133,6 +148,9 @@ export default function Checkout(props) {
                     <label htmlFor="security-code">Security Code</label>
                     <input required id="security-code" />
                   </li>
+                  <br />
+                  <br />
+
                   <button
                     onClick={() => {
                       setStringifiedCookie('cart', []);
@@ -167,8 +185,6 @@ export async function getServerSideProps(context) {
       quantity: cookie.quantity,
     };
   });
-
-  console.log(cartItems);
 
   return {
     props: {

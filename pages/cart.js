@@ -3,14 +3,31 @@ import Cookies from 'js-cookie';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { React, useEffect, useState } from 'react';
-import Header from '../components/Header.js';
+import { React, useState } from 'react';
 import Layout from '../components/Layout.js';
 import { getParsedCookie, setStringifiedCookie } from '../util/cookies';
 import { getProductData } from '../util/database';
 
 const mainStyles = css`
   margin: 0 5vw;
+
+  a {
+    color: #3e9aa5;
+    font-weight: bold;
+    :hover {
+      color: #1a494e;
+    }
+  }
+`;
+
+const layoutStyles = css`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const cartList = css`
+  flex-basis: 50%;
 `;
 
 const productItem = css`
@@ -32,33 +49,34 @@ const productContent = css`
   display: flex;
   justify-content: center;
   align-items: center;
-
   gap: 10px;
+`;
+
+const totalStyles = css`
+  background-color: white;
+  padding: 40px 20px;
+  border-radius: 3px;
+  text-align: right;
 `;
 
 export default function Cart(props) {
   const [cartItems, setCartItems] = useState(props.cartItems);
 
-  // ----- needed when getting info only from cookie
-  // useEffect(() => {
-  //   const currentCart = Cookies.get('cart') ? getParsedCookie('cart') : [];
-  //   setCartItems(currentCart);
-  // }, []);
-
+  // total Quantity of all items in cart:
   const totalQuantity = cartItems
     .map((arr) => arr.quantity)
     .reduce((a, b) => {
       return a + b;
     }, 0);
 
-  console.log(props.cartItems);
-
+  // total Sum of all items in cart:
   const cartSum = cartItems
     .map((arr) => arr.price * arr.quantity)
     .reduce((a, b) => {
       return a + b;
     }, 0);
 
+  // display message if nothing is in the cart:
   if (cartSum === 0) {
     return (
       <>
@@ -70,15 +88,26 @@ export default function Cart(props) {
         <Layout globalCart={props.globalCart}>
           <main css={mainStyles}>
             <h1>Cart</h1>
-            <p>Oh no there's nothing here yet :(</p>
-            <p>
-              We have lots of clouds for you to check out, only one click away:
-            </p>
-            <Link href="/">
-              <a>
-                <button>back to all clouds</button>
-              </a>
-            </Link>
+            <div css={layoutStyles}>
+              <div>
+                <p>Oh no there's nothing here yet :(</p>
+                <br />
+
+                <Link href="/">
+                  <a>{'<'} back to all clouds</a>
+                </Link>
+              </div>
+              <div css={totalStyles}>
+                <div>items in your cart: {totalQuantity}</div>
+                <br />
+                <div>order value: € {cartSum}</div>
+                <div>delivery: € 0 </div>
+                <div>_________________________</div>
+                <div>
+                  <strong>Total: € {cartSum}</strong>
+                </div>
+              </div>
+            </div>
           </main>
         </Layout>
       </>
@@ -95,114 +124,128 @@ export default function Cart(props) {
       <Layout globalCart={props.globalCart}>
         <main css={mainStyles}>
           <h1>Cart</h1>
-          <p>Your Chosen Ones:</p>
-          {!cartItems ? (
-            <p>nothing here yet</p>
-          ) : (
-            cartItems.map((cartItem) => {
-              return (
-                <div key={`cart-${cartItem.id}`} css={productItem}>
-                  <div css={productContent}>
-                    <Link href={`/${cartItem.id}`} passHref>
-                      <a>
-                        <Image
-                          src={`/${cartItem.id}.jpg`}
-                          width="150"
-                          height="150"
-                        />
-                      </a>
-                    </Link>
-                    <div>
+          <div css={layoutStyles}>
+            <div css={cartList}>
+              <p>Your Chosen Ones:</p>
+              {cartItems.map((cartItem) => {
+                return (
+                  // products:
+                  <div key={`cart-${cartItem.id}`} css={productItem}>
+                    <div css={productContent}>
+                      <Link href={`/products/${cartItem.id}`} passHref>
+                        <a>
+                          <Image
+                            src={`/${cartItem.id}.jpg`}
+                            width="150"
+                            height="150"
+                          />
+                        </a>
+                      </Link>
                       <div>
-                        <Link href={`/products/${cartItem.id}`} passHref>
-                          <h2>{cartItem.name}</h2>
-                        </Link>
-                        {cartItem.quantity}
-                        {/* add button */}
-                        <button
-                          onClick={() => {
-                            const updatedItem = cartItems.find(
-                              (item) => item.id === cartItem.id,
-                            );
-                            updatedItem.quantity += 1;
-                            setCartItems([...cartItems]);
+                        <div>
+                          <Link href={`/products/${cartItem.id}`} passHref>
+                            <h2>{cartItem.name}</h2>
+                          </Link>
 
-                            const currentCookie = Cookies.get('cart')
-                              ? getParsedCookie('cart')
-                              : [];
-                            const updatedCart = currentCookie.find(
-                              (cookie) => cookie.id === cartItem.id,
-                            );
-                            updatedCart.quantity += 1;
-                            setStringifiedCookie('cart', currentCookie);
-                            props.setGlobalCart(currentCookie);
-                          }}
-                        >
-                          +
-                        </button>
-                        {/* minus button */}
-                        <button
-                          onClick={() => {
-                            const updatedItem = cartItems.find(
-                              (item) => item.id === cartItem.id,
-                            );
-                            const currentCookie = Cookies.get('cart')
-                              ? getParsedCookie('cart')
-                              : [];
-                            const updatedCart = currentCookie.find(
-                              (cookie) => cookie.id === cartItem.id,
-                            );
-                            if (updatedItem.quantity !== 1) {
-                              updatedCart.quantity -= 1;
+                          {/* minus button */}
+                          <button
+                            onClick={() => {
+                              const updatedItem = cartItems.find(
+                                (item) => item.id === cartItem.id,
+                              );
+                              const currentCookie = Cookies.get('cart')
+                                ? getParsedCookie('cart')
+                                : [];
+                              const updatedCart = currentCookie.find(
+                                (cookie) => cookie.id === cartItem.id,
+                              );
+                              if (updatedItem.quantity !== 1) {
+                                updatedCart.quantity -= 1;
+                                setStringifiedCookie('cart', currentCookie);
+                                props.setGlobalCart(currentCookie);
+                                updatedItem.quantity -= 1;
+                                setCartItems([...cartItems]);
+                              }
+                            }}
+                          >
+                            -
+                          </button>
+
+                          {cartItem.quantity}
+
+                          {/* add button: */}
+                          <span> </span>
+                          <button
+                            onClick={() => {
+                              const updatedItem = cartItems.find(
+                                (item) => item.id === cartItem.id,
+                              );
+                              updatedItem.quantity += 1;
+                              setCartItems([...cartItems]);
+
+                              const currentCookie = Cookies.get('cart')
+                                ? getParsedCookie('cart')
+                                : [];
+                              const updatedCart = currentCookie.find(
+                                (cookie) => cookie.id === cartItem.id,
+                              );
+                              updatedCart.quantity += 1;
                               setStringifiedCookie('cart', currentCookie);
                               props.setGlobalCart(currentCookie);
-                              updatedItem.quantity -= 1;
-                              setCartItems([...cartItems]);
-                            }
-                          }}
-                        >
-                          -
-                        </button>
-                      </div>
-                      <div>
-                        subtotal: {cartItem.price * cartItem.quantity} €
+                            }}
+                          >
+                            +
+                          </button>
+                        </div>
+                        <div>
+                          subtotal: {cartItem.price * cartItem.quantity} €
+                        </div>
                       </div>
                     </div>
+                    <div>
+                      {/* remove button */}
+                      <button
+                        onClick={() => {
+                          // cookie
+                          const currentCookie = Cookies.get('cart')
+                            ? getParsedCookie('cart')
+                            : [];
+                          const newCookie = currentCookie.filter((cookie) => {
+                            return cookie.id !== cartItem.id;
+                          });
+                          setStringifiedCookie('cart', newCookie);
+                          props.setGlobalCart([...newCookie]);
+                          // cart
+                          const newCart = cartItems.filter((item) => {
+                            return item.id !== cartItem.id;
+                          });
+                          setCartItems([...newCart]);
+                          console.log(newCart);
+                        }}
+                      >
+                        remove
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    {/* remove button */}
-                    <button
-                      onClick={() => {
-                        // cookie
-                        const currentCookie = Cookies.get('cart')
-                          ? getParsedCookie('cart')
-                          : [];
-                        const newCookie = currentCookie.filter((cookie) => {
-                          return cookie.id !== cartItem.id;
-                        });
-                        setStringifiedCookie('cart', newCookie);
-                        props.setGlobalCart([...newCookie]);
-                        // cart
-                        const newCart = cartItems.filter((item) => {
-                          return item.id !== cartItem.id;
-                        });
-                        setCartItems([...newCart]);
-                        console.log(newCart);
-                      }}
-                    >
-                      remove from cart
-                    </button>
-                  </div>
-                </div>
-              );
-            })
-          )}
-          <div>total quantity of items: {totalQuantity}</div>
-          <div>total sum: {cartSum} €</div>
-          <br />
-          <Link href="/checkout">
-            <button>Checkout</button>
-          </Link>
+                );
+              })}
+            </div>
+            <div css={totalStyles}>
+              <div>items in your cart: {totalQuantity}</div>
+              <br />
+              <div>order value: € {cartSum}</div>
+              <div>delivery: € 0 </div>
+              <div>_________________________</div>
+              <div>
+                <strong>Total: € {cartSum}</strong>
+              </div>
+              <br />
+              <br />
+              <Link href="/checkout">
+                <a>Checkout {'>'}</a>
+              </Link>
+            </div>
+          </div>
         </main>
       </Layout>
     </>
@@ -225,8 +268,6 @@ export async function getServerSideProps(context) {
       quantity: cookie.quantity,
     };
   });
-
-  console.log(cartItems);
 
   return {
     props: {

@@ -1,37 +1,36 @@
 import { css } from '@emotion/react';
-import Cookies from 'js-cookie';
+import Image from 'next/image';
 import Link from 'next/link';
-import { React, useContext, useEffect, useState } from 'react';
-import Cart from '../pages/cart.js';
-import { getParsedCookie, setStringifiedCookie } from '../util/cookies.js';
+import { React } from 'react';
 
 const headerStyles = css`
   display: flex;
   justify-content: space-between;
   padding: 10px 14px;
   color: #333333;
+
+  a {
+    :hover {
+      color: #1a494e;
+    }
+  }
 `;
 
-// let context = React.createContext(null);
+const cartStyles = css`
+  /* margin-top: 10px; */
+`;
+
+const cartCountStyle = css`
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  padding: 2px 6px;
+  background-color: #333333;
+  opacity: 80%;
+  margin-left: 5px;
+`;
 
 export default function Header(props) {
-  // const [cartItems, setCartItems] = useState([]);
-
-  // useEffect(() => {
-  //   const currentCart = Cookies.get('cart') ? getParsedCookie('cart') : [];
-  //   setCartItems(currentCart);
-  //   console.log('set initial value');
-  // }, []);
-
-  // useEffect(() => {
-  //   setCartCounter(props.totalQuantity);
-  // }, []);
-
-  // let totalQuantity = 0;
-  // for (let i = 0; i < props.cartItems.length; i++) {
-  //   totalQuantity += props.cartItems[i].quantity;
-  // }
-
   const totalQuantity = props.globalCart
     .map((arr) => arr.quantity)
     .reduce((a, b) => {
@@ -41,9 +40,19 @@ export default function Header(props) {
   return (
     <header css={headerStyles}>
       <Link href="/">☁️</Link>
+      <Link href="/">Clouders</Link>
       <span>
-        <Link href="/cart">cart </Link>
-        <span>({totalQuantity})</span>
+        <Link href="/cart">
+          <div>
+            <Image
+              css={cartStyles}
+              src="/cart-icon.png"
+              width="25"
+              height="20"
+            />
+            <span css={cartCountStyle}>{totalQuantity} </span>
+          </div>
+        </Link>
       </span>
     </header>
   );

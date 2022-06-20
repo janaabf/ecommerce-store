@@ -1,8 +1,7 @@
 import { css, Global } from '@emotion/react';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
-import Layout from '../components/Layout';
-import { getParsedCookie, setStringifiedCookie } from '../util/cookies';
+import { getParsedCookie } from '../util/cookies';
 
 // color palette:
 // red: #f58476
@@ -33,8 +32,8 @@ function MyApp({ Component, pageProps }) {
           }
 
           a {
-            color: inherit;
             text-decoration: none;
+            color: black;
           }
 
           * {
@@ -44,7 +43,7 @@ function MyApp({ Component, pageProps }) {
           button {
             border: none;
             border-radius: 3px;
-            padding: 5px;
+            padding: 5px 10px;
             margin: 5px;
             background-color: #8cb9be;
             :hover {
