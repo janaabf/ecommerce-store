@@ -126,7 +126,9 @@ export default function Cart(props) {
           <h1>Cart</h1>
           <div css={layoutStyles}>
             <div css={cartList}>
-              <p>Your Chosen Ones:</p>
+              <p>
+                <strong>Your Chosen Ones:</strong>
+              </p>
               {cartItems.map((cartItem) => {
                 return (
                   // products:

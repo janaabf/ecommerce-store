@@ -40,8 +40,8 @@ const formStyles = css`
     justify-content: space-between;
   }
   input {
-    background: none;
     margin-left: 20px;
+    background-color: #f3f2ef;
     border: 1px solid black;
     width: 20vw;
 
