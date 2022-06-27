@@ -1,5 +1,5 @@
 {
-  "name": "pjct-next-3-ecommerce-store",
+  "name": "ecommerce-store",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "dotenv ley"
+    "migrate": "dotenv ley",
+    "heroku-postbuild": "yarn migrate up && yarn build"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
@@ -59,5 +60,8 @@
     "eslint-plugin-react": "7.30.0",
     "eslint-plugin-react-hooks": "4.5.0",
     "@typescript-eslint/utils": "5.27.1"
-  }
+  },
+  "cacheDirectories": [
+    ".next/cache"
+  ]
 }
