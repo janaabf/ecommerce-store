@@ -1,11 +1,11 @@
 ## Cumuli
 
-This is an e-commerce store built as a practice project during the upLeveled bootcamp for web development.
+This is an e-commerce store built as a practice project during the upLeveled web development bootcamp.
+The site is simulating a real e-commerce shopping experience excluding the payment process and without saving any personal data.
 
 ## Technologies used
 
 - Next.js
-- React.js
 - PostgreSQL
 - Emotion
 
