@@ -25,18 +25,17 @@ function MyApp({ Component, pageProps }) {
             padding: 0;
             margin: 0;
             background-color: #f3f2ef;
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-              Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-              sans-serif;
           }
 
           a {
             text-decoration: none;
             color: black;
+            font-family: 'Quicksand', sans-serif;
           }
 
           * {
             box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
           }
 
           button {

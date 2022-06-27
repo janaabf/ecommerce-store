@@ -1,4 +1,4 @@
-## Cloud Store
+## Cumuli
 
 This is an e-commerce store built as a practice project during the upLeveled bootcamp for web development.
 
@@ -9,7 +9,7 @@ This is an e-commerce store built as a practice project during the upLeveled boo
 - PostgreSQL
 - Emotion
 
-Languages
+Languages:
 
 - Javascript
 - JSX

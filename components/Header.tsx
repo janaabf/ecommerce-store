@@ -29,6 +29,12 @@ const cartCountStyle = css`
   margin-left: 5px;
 `;
 
+const title = css`
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+`;
+
 type Props = {
   globalCart: { id: number; quantity: number }[];
 };
@@ -43,6 +49,7 @@ export default function Header(props: Props) {
   return (
     <header css={headerStyles}>
       <Link href="/">☁️</Link>
+      <span css={title}>.. Cumuli ..</span>
       <span>
         <Link href="/cart">
           <div>

@@ -30,6 +30,11 @@ const heroContent = css`
   justify-content: center;
   align-items: center;
   min-height: 50vh;
+
+  h1 {
+    font-weight: 600;
+    font-size: 50px;
+  }
 `;
 
 const products = css`

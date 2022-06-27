@@ -13,7 +13,7 @@ const footerStyles = css`
 export default function Footer() {
   return (
     <footer css={footerStyles}>
-      <div>source: trust me</div>
+      <div> © 2022 Jana Abfalterer || source: trust me</div>
     </footer>
   );
 }
