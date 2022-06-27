@@ -2,7 +2,6 @@
 
 const productData = [
   {
-    id: '1',
     name: 'Lia',
     subtitle: 'the classic',
     description:
@@ -10,7 +9,6 @@ const productData = [
     price: '100',
   },
   {
-    id: '2',
     name: 'Yoonie',
     subtitle: 'the soft boi',
     description:
@@ -18,14 +16,12 @@ const productData = [
     price: '300',
   },
   {
-    id: '3',
     name: 'Frieda',
     subtitle: 'the drama b',
     description: 'She is a statement. No description needed.',
     price: '200',
   },
   {
-    id: '4',
     name: 'Ola',
     subtitle: 'the certified blanket',
     description:
@@ -33,14 +29,12 @@ const productData = [
     price: '150',
   },
   {
-    id: '5',
     name: 'Mina',
     subtitle: 'the pocket sized one',
     description: 'Need a cloud on the go? We get it, and Mina does too.',
     price: '80',
   },
   {
-    id: '6',
     name: 'Thea',
     subtitle: 'the I do not wanna talk',
     description:
@@ -49,17 +43,17 @@ const productData = [
   },
 ];
 
-exports.up = async function (sql) {
+export async function up(sql) {
   await sql`
-  INSERT INTO productData
-		${sql(productData, 'name', 'subtitle', 'description', 'price')}`;
-};
+  INSERT INTO
+  productData ${sql(productData, 'name', 'subtitle', 'description', 'price')}`;
+}
 
-exports.down = async function (sql) {
+export async function down(sql) {
   for (const product of productData) {
     await sql`
   DELETE FROM
-	  productData
+  productData
   WHERE
   name = ${product.name} AND
   subtitle = ${product.subtitle} AND
@@ -67,4 +61,4 @@ exports.down = async function (sql) {
   price = ${product.price}
 	`;
   }
-};
+}
