@@ -43,13 +43,13 @@ const productData = [
   },
 ];
 
-export async function up(sql) {
+exports.up = async function (sql) {
   await sql`
   INSERT INTO
   productData ${sql(productData, 'name', 'subtitle', 'description', 'price')}`;
-}
+};
 
-export async function down(sql) {
+exports.down = async function (sql) {
   for (const product of productData) {
     await sql`
   DELETE FROM
@@ -61,4 +61,4 @@ export async function down(sql) {
   price = ${product.price}
 	`;
   }
-}
+};
