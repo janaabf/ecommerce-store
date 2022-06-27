@@ -1,34 +1,122 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Cloud Store
 
-## Getting Started
+This is an e-commerce store built as a practice project during the upLeveled bootcamp for web development.
 
-First, run the development server:
+## Technologies used
+
+- Next.js
+- React.js
+- PostgreSQL
+- Emotion
+
+Languages
+
+- Javascript
+- JSX
+- Typescript
+- TSX
+
+## Example
+
+(insert pictures)
+
+## Setup
+
+1. Clone the project on your local machine (run each line individually):
 
 ```bash
-npm run dev
-# or
+git clone <url>
+cd <repo name>
+yarn
+```
+
+2. Connect to default database as admin:
+
+- On Windows
+
+```bash
+psql -U postgres
+```
+
+- On macOS
+
+```bash
+psql postgres
+```
+
+- On Linux
+
+```bash
+sudo -u postgres psql
+```
+
+3. Set up the database:
+
+```bash
+CREATE DATABASE <database name>;
+CREATE USER <user name> WITH ENCRYPTED PASSWORD '<user password>';
+GRANT ALL PRIVILEGES ON DATABASE <database name> TO <user name>;
+```
+
+4. After queries are successfully ran, quit `psql` and connect to the database
+
+```bash
+\q
+```
+
+- On Windows & macOS
+
+```bash
+psql -U `<user name>` `<database name>
+```
+
+- On Linux
+
+```bash
+sudo -u <user name> psql -U <user name> <database name>
+```
+
+5. In the repository's directory, run migrations using ley:
+
+```bash
+yarn migrate up
+```
+
+6. Create a .env file:
+
+- Open the project in your code editor
+- Copy the content of the .env.example file into the .env file
+- Replace XXXXXXXX with the access information
+- add .env file to .gitignore
+
+7. (Optional) Start development server:
+
+```bash
 yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Deployment Guide
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Heroku was used to deploy this site,
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Setup Heroku
 
-## Learn More
+1. Sign up for Heroku: https://signup.heroku.com/
+2. Create a new App
+3. Choose a name and select the "Europe" Region
+4. Click on the button in the middle called "Connect to GitHub"
+5. Search for your repository in the search box at the bottom of the page and click on the "Connect" button
+6. Click on the button for "Enable Automatic Deploys"
+7. Go back to the Overview tab and click on "Configure Add-On"
+8. Search for "Postgres" and select "Heroku Postgres" from the results
+9. Deploy your app
 
-To learn more about Next.js, take a look at the following resources:
+### Configure Application
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Connect to Heroku PostgreSQL Database via psql
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Enjoy
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Now everything should be up and running! Congratulations :)
