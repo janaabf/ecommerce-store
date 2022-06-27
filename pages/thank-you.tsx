@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { React } from 'react';
 import Layout from '../components/Layout.js';
 
 const mainStyles = css`
@@ -17,7 +16,11 @@ const mainStyles = css`
   }
 `;
 
-export default function Checkout(props) {
+type Props = {
+  globalCart: { id: number; quantity: number };
+};
+
+export default function Checkout(props: Props) {
   return (
     <>
       <Head>
@@ -29,6 +32,7 @@ export default function Checkout(props) {
         <main css={mainStyles}>
           <div>
             <h1>Thank you for your order!</h1>
+            {/* {console.log(props)} */}
             <Link href="/">
               <a>Shop more</a>
             </Link>

@@ -14,7 +14,6 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const currentCart = Cookies.get('cart') ? getParsedCookie('cart') : [];
     setGlobalCart(currentCart);
-    console.log('set initial value');
   }, []);
 
   return (

@@ -278,5 +278,3 @@ export async function getServerSideProps(context) {
     },
   };
 }
-
-//     return [cookie, databaseProduct];

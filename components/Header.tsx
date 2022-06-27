@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { React } from 'react';
 
 const headerStyles = css`
   display: flex;
@@ -30,17 +29,20 @@ const cartCountStyle = css`
   margin-left: 5px;
 `;
 
-export default function Header(props) {
+type Props = {
+  globalCart: { id: number; quantity: number }[];
+};
+
+export default function Header(props: Props) {
   const totalQuantity = props.globalCart
-    .map((arr) => arr.quantity)
+    .map((array) => array.quantity)
     .reduce((a, b) => {
-      return parseInt(a) + parseInt(b);
+      return a + b;
     }, 0);
 
   return (
     <header css={headerStyles}>
       <Link href="/">☁️</Link>
-      <Link href="/">Clouders</Link>
       <span>
         <Link href="/cart">
           <div>
